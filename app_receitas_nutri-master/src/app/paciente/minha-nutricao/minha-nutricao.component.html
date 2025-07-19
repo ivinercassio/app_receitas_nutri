@@ -1,0 +1,78 @@
+<!-- minha-nutricao.component.html -->
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Minha Nutrição</h2>
+    <div class="btn-group">
+      <button class="btn btn-outline-primary" 
+              [class.active]="periodo === 'dia'"
+              (click)="mudarPeriodo('dia')">
+        Dia
+      </button>
+      <button class="btn btn-outline-primary" 
+              [class.active]="periodo === 'semana'"
+              (click)="mudarPeriodo('semana')">
+        Semana
+      </button>
+      <button class="btn btn-outline-primary" 
+              [class.active]="periodo === 'mes'"
+              (click)="mudarPeriodo('mes')">
+        Mês
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="carregando" class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Carregando...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!carregando && relatorio" class="card shadow">
+    <div class="card-body">
+      <h5 class="card-title mb-4">Resumo Nutricional</h5>
+      
+      <div class="row">
+        <div class="col-md-3 text-center">
+          <div class="card bg-light">
+            <div class="card-body">
+              <h6>Calorias Totais</h6>
+              <h3 class="text-primary">{{relatorio.caloriasTotais | number}}</h3>
+              <small>kcal</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 text-center">
+          <div class="card bg-light">
+            <div class="card-body">
+              <h6>Proteínas</h6>
+              <h3 class="text-success">{{relatorio.proteinas | number}}g</h3>
+              <small>{{relatorio.percentualProteinas | number:'1.0-0'}}%</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 text-center">
+          <div class="card bg-light">
+            <div class="card-body">
+              <h6>Carboidratos</h6>
+              <h3 class="text-warning">{{relatorio.carboidratos | number}}g</h3>
+              <small>{{relatorio.percentualCarboidratos | number:'1.0-0'}}%</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 text-center">
+          <div class="card bg-light">
+            <div class="card-body">
+              <h6>Gorduras</h6>
+              <h3 class="text-danger">{{relatorio.gorduras | number}}g</h3>
+              <small>{{relatorio.percentualGorduras | number:'1.0-0'}}%</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-5">
+        <app-grafico-nutricional [dados]="relatorio"></app-grafico-nutricional>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Receitas Favoritas</h2>
+  
+  <div *ngIf="carregando" class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Carregando...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!carregando && favoritos.length === 0" class="alert alert-info">
+    Você ainda não tem receitas favoritas.
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="col" *ngFor="let favorito of favoritos">
+      <div class="card h-100">
+        <img [src]="favorito.receita.foto || 'assets/sem-imagem.jpg'" 
+             class="card-img-top" alt="{{favorito.receita.titulo}}">
+        <div class="card-body">
+          <h5 class="card-title">{{favorito.receita.titulo}}</h5>
+          <p class="card-text">
+            <small class="text-muted">
+              Favoritado em: {{favorito.dataFavoritacao | date:'dd/MM/yyyy'}}
+            </small>
+          </p>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-outline-danger" (click)="removerFavorito(favorito.idUsuarioReceita)">
+            <i class="bi bi-heart-fill"></i> Remover
+          </button>
+          <a [routerLink]="['/receitas', favorito.receita.idReceita]" class="btn btn-primary ms-2">
+            Ver Receita
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

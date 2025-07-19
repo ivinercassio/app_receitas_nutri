@@ -1,0 +1,32 @@
+
+<div class="container mt-4">
+  <h2 class="mb-4">Minhas Receitas Realizadas</h2>
+  
+  <div *ngIf="carregando" class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Carregando...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!carregando && historico.length === 0" class="alert alert-info">
+    Você ainda não realizou nenhuma receita.
+  </div>
+
+  <div class="list-group">
+    <div *ngFor="let item of historico" class="list-group-item list-group-item-action">
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">{{item.receita.titulo}}</h5>
+        <small>{{item.dataHoraConsumo | date:'dd/MM/yyyy HH:mm'}}</small>
+      </div>
+      <p class="mb-1">
+        <span class="badge bg-primary me-2">{{item.receita.horario}}</span>
+        Calorias: {{item.receita.caloriasTotais | number}} kcal
+      </p>
+      <div class="mt-2">
+        <a [routerLink]="['/receitas', item.receita.idReceita]" class="btn btn-sm btn-outline-primary">
+          Ver Receita Novamente
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

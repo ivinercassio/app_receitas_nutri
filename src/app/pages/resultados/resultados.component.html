@@ -1,22 +1,63 @@
+<app-menu></app-menu>
 <div class="container">
     <h2 align=center class="mt-5 mb-5">Resultados</h2>
 
-    <table class="d-flex justify-content-center mb-3">
+    <table class="d-flex justify-content-center mb-3 table">
         <tbody>
             <div *ngFor="let item of receitas; let i = index">
-                <tr class="mb-2 border-1">
-                    <td class="mx-auto col">
-                        <input class="form-control border-0" type="text" [value]="item.titulo">
-                    </td>
-                    <td> <label for="" class="col">Rendimento (porções): {{ item.rendimento }}</label> </td>
-                    <td> <label for="" class="col ms-3">Tempo (min): {{ item.tempo }}</label> </td>
-                    <td class="mx-auto col">
-                        <button (click)="consultarReceita(item.id)" type="button"
-                            class="btn btn-outline-secondary ms-4">Consultar</button>
-                    </td>
+                <tr>
+                    <div class="mb-2 row">
+                        <div class="col">
+                            <label for="titulo" class="form-label">Titulo</label>
+                            <input class="form-control" type="text" name="titulo" id="titulo" [value]="item.titulo">
+                        </div>
+                        <div class="col">
+                            <label for="rendimento" class="form-label">Rendimento (porções)</label>
+                            <input type="text" name="rendimento" id="rendimento" class="form-control"
+                                [value]="item.rendimento">
+                        </div>
+                        <div class="col">
+                            <label for="tempo" class="form-label ms-3">Tempo (min)</label>
+                            <input type="text" name="tempo" id="tempo" class="form-control" [value]="item.tempo">
+                        </div>
+                        <div class="col mt-4">
+                            <button (click)="consultarReceita(item.id)" type="button"
+                                class="btn btn-outline-secondary ms-4">Consultar</button>
+                        </div>
+                    </div>
                 </tr>
             </div>
         </tbody>
     </table>
+
+    <!-- 
+    Opcao Bootstrap pra fazer listagem  
+    <div class="list-group mb-3">
+            <a href="#" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">List group item heading</h5>
+                    <small>3 days ago</small>
+                </div>
+                <p class="mb-1">Some placeholder content in a paragraph.</p>
+                <small>And some small print.</small>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">List group item heading</h5>
+                    <small class="text-body-secondary">3 days ago</small>
+                </div>
+                <p class="mb-1">Some placeholder content in a paragraph.</p>
+                <small class="text-body-secondary">And some muted small print.</small>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">List group item heading</h5>
+                    <small class="text-body-secondary">3 days ago</small>
+                </div>
+                <p class="mb-1">Some placeholder content in a paragraph.</p>
+                <small class="text-body-secondary">And some muted small print.</small>
+            </a>
+        </div>
+    -->
 
 </div>

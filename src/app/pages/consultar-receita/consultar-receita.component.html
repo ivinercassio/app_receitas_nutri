@@ -1,0 +1,46 @@
+<app-menu></app-menu>
+<div class="container">
+    <h2 align=center class="mb-5 mt-5">Consultar Receita</h2>
+
+    <form class="form">
+        <div class="row mb-3">
+            <div class="col-3">
+                <label class="form-label" for="tilulo">Titulo</label>
+                <input class="form-control" type="text" name="tilulo" id="tilulo" [value]="receita.titulo" readonly>
+            </div>
+            <div class="col-3">
+                <label class="mx-auto form-label" for="rendimento">Rendimento (porções)</label>
+                <input class="form-control" type="text" name="rendimento" id="rendimento" [value]="receita.rendimento" readonly>
+            </div>
+            <div class="col-3">
+                <label class="mx-auto form-label" for="tempo">Tempo (min)</label>
+                <input class="form-control" type="text" name="tempo" id="tempo" [value]="receita.tempo" readonly>
+            </div>
+        </div>
+        
+        <hr>
+
+        <div *ngIf="receita.foto != null">
+            <img [src]="receita.foto" alt="Imagem da receita">
+        </div>
+
+        <div class="row mb-3">
+            <ol class="list-group list-group-numbered">
+                <li class="list-group-item" *ngFor="let item of ingredientes; let i = index">
+                    <div class="d-flex w-100 justify-content-between">
+                        <span>{{ item.descricao }}</span>
+                        <small>{{ array[i].quantidade }}</small>
+                    </div>
+                    <small class="mb-1">Calorias: {{ item.calorias }} kcal</small>
+                </li>
+            </ol>
+        </div>
+
+        <div class="row mb-3">
+            <div class="form-floating">
+                <textarea class="form-control" id="preparo" readonly>{{ receita.preparo }}</textarea>
+                <label for="preparo">Modo de Preparo</label>
+            </div>
+        </div>
+    </form>
+</div>

@@ -22,6 +22,10 @@ export class ReceitaIngredienteService {
     return this.http.get<ReceitaIngrediente[]>(`${this.apiUrl}/ingrediente/${descricao}`);
   }
 
+  public findAllByReceitaId(id: number): Observable<ReceitaIngrediente[]> {
+    return this.http.get<ReceitaIngrediente[]>(`${this.apiUrl}/receita/${id}`)
+  }
+
   public getById(id: number) {
     return this.http.get(`${this.apiUrl}/${id}`, this.authService.gerarCabecalhoHTTP());
   }

@@ -5,11 +5,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ReceitaIngrediente } from '../../models/receita-ingrediente';
 import { ReceitaService } from '../../services/receita.service';
 import { CommonModule } from '@angular/common';
+import { MenuComponent } from '../../shared/menu/menu.component';
 
 @Component({
   selector: 'app-resultados',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MenuComponent],
   templateUrl: './resultados.component.html',
   styleUrl: './resultados.component.css'
 })
@@ -29,9 +30,6 @@ export class ResultadosComponent {
         next: (resultado) => {
           this.array = resultado;
 
-          console.log("array: ")
-          console.log(this.array);
-
           // busca as receitas encontradas
           this.array.forEach(item => {
             if (item.id)
@@ -40,9 +38,6 @@ export class ResultadosComponent {
                   let objReceita = new Receita();
                   Object.assign(objReceita, receita);
                   this.receitas.push(objReceita);
-
-                  console.log("receitas: ")
-                  console.log(this.receitas);
                 }, error: (erro) => {
                   console.warn("Erro em buscar receitas. " + erro)
                 }
@@ -58,6 +53,6 @@ export class ResultadosComponent {
 
   consultarReceita(id: number | undefined): void {
     console.info("consultar receita de id = " + id);
-    // this.router.navigate(['/consultar-receita', id]);
+    this.router.navigate(['/consultar-receita', id]);
   }
 }

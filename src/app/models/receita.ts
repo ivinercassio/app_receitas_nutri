@@ -2,7 +2,7 @@ import { Nutricionista } from "./nutricionista";
 
 export class Receita {
     id?: number;
-    nutricionista!: Nutricionista;
+    nutricionistaDTO!: Nutricionista;
     titulo!: string;
     rendimento!: number;
     tempo!: number;

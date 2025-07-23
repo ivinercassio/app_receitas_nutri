@@ -3,7 +3,7 @@ import { Receita } from "./receita";
 
 export class PacienteReceita {
     id?: number;
-    paciente!: Paciente;
-    receita!: Receita;
+    pacienteDTO!: Paciente;
+    receitaDTO!: Receita;
     dataFavoritacao!: string;
 }

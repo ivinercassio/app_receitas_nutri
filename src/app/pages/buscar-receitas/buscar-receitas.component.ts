@@ -4,11 +4,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReceitaService } from '../../services/receita.service';
 import { Router } from '@angular/router';
 import { ReceitaIngredienteService } from '../../services/receita-ingrediente.service';
+import { MenuComponent } from '../../shared/menu/menu.component';
 
 @Component({
   selector: 'app-buscar-receitas',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, CommonModule],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule, MenuComponent],
   templateUrl: './buscar-receitas.component.html',
   styleUrl: './buscar-receitas.component.css'
 })

@@ -3,7 +3,7 @@ import { Receita } from "./receita";
 
 export class ReceitaIngrediente {
     id?: number;
-    receita!: Receita;
-    ingrediente!: Ingrediente;
+    receitaDTO!: Receita;
+    ingredienteDTO!: Ingrediente;
     quantidade!: string;
 }

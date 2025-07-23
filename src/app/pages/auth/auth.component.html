@@ -1,0 +1,24 @@
+<div class="container">
+    <div class="d-flex justify-content-center">
+        <img src="assets/images/logo_sem_fundo.png" alt="Logo do sistema">
+    </div>
+    <h2 align=center class="mb-5">Olá, bem-vindo(a)!</h2>
+
+    <form class="form" [formGroup]="formulario" (ngSubmit)="entrar()">
+        <div class="row d-flex justify-content-center mb-3">
+            <div class="col-3">
+                <label class="form-label" for="login">Login</label>
+                <input class="form-control" type="text" name="login" id="login" placeholder="Digite seu login"
+                    formControlName="login">
+            </div>
+            <div class="col-3">
+                <label class="form-label" for="senha">Senha</label>
+                <input class="form-control" type="text" name="senha" id="senha" placeholder="Digite sua senha"
+                    formControlName="senha">
+            </div>
+        </div>
+        <div class="d-grid col-6 mx-auto">
+            <button type="submit" class="btn btn-primary">Entrar</button>
+        </div>
+    </form>
+</div>

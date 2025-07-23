@@ -1,27 +1,18 @@
 import { Component } from '@angular/core';
-import { AutenticacaoService } from '../../servicos/autenticacao.service';
-import { Usuario } from '../../models/usuario.model';
-import { Router } from '@angular/router';
+import { Usuario } from '../../models/usuario';
+import { Paciente } from '../../models/paciente';
+import { Nutricionista } from '../../models/nutricionista';
 
 @Component({
-  selector: 'app-cabecalho',
-  templateUrl: './cabecalho.component.html',
-  styleUrls: ['./cabecalho.component.scss']
+  selector: 'app-menu',
+  standalone: true,
+  imports: [],
+  templateUrl: './menu.component.html',
+  styleUrl: './menu.component.css'
 })
-export class CabecalhoComponent {
-  usuario?: Usuario;
+export class MenuComponent {
 
-  constructor(
-    private authService: AutenticacaoService,
-    private router: Router
-  ) {
-    this.authService.usuarioAtual.subscribe(usuario => {
-      this.usuario = usuario;
-    });
-  }
-
-  logout() {
-    this.authService.logout();
-    this.router.navigate(['/login']);
-  }
+  usuario: Usuario = new Usuario();
+  paciente: Paciente = new Paciente();
+  nutricionista: Nutricionista = new Nutricionista();
 }

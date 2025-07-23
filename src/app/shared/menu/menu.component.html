@@ -10,26 +10,29 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/receitas" routerLinkActive="active">
+          <!-- <a class="nav-link" routerLink="/receitas" routerLinkActive="active"> -->
+          <a class="nav-link" routerLinkActive="active">
             <i class="bi bi-search me-1"></i>Buscar Receitas
           </a>
         </li>
         
-        <li *ngIf="usuario?.tipoUsuario === 1" class="nav-item">
-          <a class="nav-link" routerLink="/nutricionista" routerLinkActive="active">
+        <li *ngIf="usuario.nivelAcesso == 'NUTRIOCIONISTA'" class="nav-item">
+          <!-- <a class="nav-link" routerLink="/nutricionista" routerLinkActive="active"> -->
+          <a class="nav-link" routerLinkActive="active">
             <i class="bi bi-clipboard-data me-1"></i>Painel Nutricionista
           </a>
         </li>
         
-        <li *ngIf="usuario?.tipoUsuario === 2" class="nav-item">
-          <a class="nav-link" routerLink="/paciente" routerLinkActive="active">
+        <li *ngIf="usuario.nivelAcesso == 'PACIENTE'" class="nav-item">
+          <!-- <a class="nav-link" routerLink="/paciente" routerLinkActive="active"> -->
+          <a class="nav-link" routerLinkActive="active">
             <i class="bi bi-person-circle me-1"></i>Minha Área
           </a>
         </li>
       </ul>
       
-      <ul class="navbar-nav">
-        <li *ngIf="usuario" class="nav-item dropdown">
+      <!-- <ul class="navbar-nav">
+        <li *ngIf="usuario.nivelAcesso" class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
             <i class="bi bi-person-circle me-1"></i>{{usuario.nome}}
           </a>
@@ -51,7 +54,7 @@
             <i class="bi bi-box-arrow-in-right me-1"></i>Entrar
           </a>
         </li>
-      </ul>
+      </ul> -->
     </div>
   </div>
 </nav>

@@ -2,9 +2,11 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-rodape',
+  standalone: true,
+  imports: [],
   templateUrl: './rodape.component.html',
-  styleUrls: ['./rodape.component.scss']
+  styleUrl: './rodape.component.css'
 })
 export class RodapeComponent {
-  anoAtual: number = new Date().getFullYear();
+
 }

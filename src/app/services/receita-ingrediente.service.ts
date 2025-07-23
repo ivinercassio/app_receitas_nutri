@@ -2,33 +2,39 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ReceitaIngrediente } from '../models/receita-ingrediente';
+import { appSettings } from '../app.config';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ReceitaIngredienteIngredienteService {
+export class ReceitaIngredienteService {
 
-  private apiUrl = 'http://localhost:8080/receitaIngredientes-ingredientes';
+  private apiUrl = `${appSettings.apiUrl}/receitas-ingredientes`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   public findAll(): Observable<ReceitaIngrediente[]> {
-    return this.http.get<ReceitaIngrediente[]>(this.apiUrl);
+    return this.http.get<ReceitaIngrediente[]>(this.apiUrl, this.authService.gerarCabecalhoHTTP());
+  }
+
+  public findAllByIngredienteDescricao(descricao: string): Observable<ReceitaIngrediente[]> {
+    return this.http.get<ReceitaIngrediente[]>(`${this.apiUrl}/ingrediente/${descricao}`);
   }
 
   public getById(id: number) {
-    return this.http.get(`${this.apiUrl}/${id}`);
+    return this.http.get(`${this.apiUrl}/${id}`, this.authService.gerarCabecalhoHTTP());
   }
 
   public save(receitaIngrediente: ReceitaIngrediente): Observable<ReceitaIngrediente> {
     if (receitaIngrediente.id) {
-      return this.http.put<ReceitaIngrediente>(`${this.apiUrl}/${receitaIngrediente.id}`, receitaIngrediente);
+      return this.http.put<ReceitaIngrediente>(`${this.apiUrl}/${receitaIngrediente.id}`, receitaIngrediente, this.authService.gerarCabecalhoHTTP());
     } else {
-      return this.http.post<ReceitaIngrediente>(this.apiUrl, receitaIngrediente);
+      return this.http.post<ReceitaIngrediente>(this.apiUrl, receitaIngrediente, this.authService.gerarCabecalhoHTTP());
     }
   }
 
   public deleteById(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, this.authService.gerarCabecalhoHTTP());
   }
 }

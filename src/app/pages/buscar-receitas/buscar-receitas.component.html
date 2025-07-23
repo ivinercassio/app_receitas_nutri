@@ -6,12 +6,14 @@
             <div class="col-8">
                 <label class="form-label" for="ingrediente">Ingrediente</label>
                 <input class="form-control" type="text" name="ingrediente" id="ingrediente"
+                    placeholder="Adicione um ingrediente a busca" [(ngModel)]="ingrediente">
+                <!-- <input class="form-control" type="text" name="ingrediente" id="ingrediente"
                     placeholder="Adicione um ingrediente a busca" [(ngModel)]="ingrediente"
-                    (keyup.enter)="onEnter($event)">
+                    (keyup.enter)="onEnter($event)"> -->
             </div>
         </div>
 
-        <table class="d-flex justify-content-center mb-3">
+        <!-- <table class="d-flex justify-content-center mb-3">
             <tbody>
                 <div *ngFor="let item of array; let i = index">
                     <tr class="mb-2 col-8">
@@ -25,10 +27,10 @@
                     </tr>
                 </div>
             </tbody>
-        </table>
+        </table> -->
 
         <div class="d-grid col-8 mx-auto">
-            <button type="submit" class="btn btn-warning">Buscar</button>
+            <button type="submit" class="btn btn-warning" (keyup.enter)="onEnter($event)">Buscar</button>
         </div>
     </form>
 </div>

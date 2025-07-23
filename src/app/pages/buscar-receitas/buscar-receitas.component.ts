@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReceitaService } from '../../services/receita.service';
 import { Router } from '@angular/router';
+import { ReceitaIngredienteService } from '../../services/receita-ingrediente.service';
 
 @Component({
   selector: 'app-buscar-receitas',
@@ -14,26 +15,26 @@ import { Router } from '@angular/router';
 export class BuscarReceitasComponent {
 
   ingrediente: string = "";
-  array: string[] = [];
+  // array: string[] = [];
 
-  constructor(private receitaService: ReceitaService, private router: Router) { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void { }
 
   onEnter(event: any): void {
-    const text = event.target.value;
-    this.array.push(text);
-    this.ingrediente = "";
-    console.log(this.array);
+    this.buscar();
+    // const text = event.target.value;
+    // this.array.push(text);
+    // this.ingrediente = "";
+    // console.log(this.array);
   }
 
-  removerIngrediente(texto: string): void {
-    this.array = this.array.filter(ingrediente => ingrediente.valueOf() != texto);
-    console.log("ingrediente removido: " + this.array);
-  }
+  // removerIngrediente(texto: string): void {
+  //   this.array = this.array.filter(ingrediente => ingrediente.valueOf() != texto);
+  //   console.log("ingrediente removido: " + this.array);
+  // }
 
   buscar(): void {
-
+    this.router.navigate(["/resultados", this.ingrediente]);
   }
-
 }

@@ -29,26 +29,18 @@ export class AuthComponent {
     objLogin = this.formulario.value;
 
     if (this.formulario.valid) {
-      this.authService.authentication(objLogin).subscribe(resultado => {
-        console.info("Usuário logado");
-        console.log(resultado);
-
-        // let token = new Token();
-        // token = resultado; // erro na conversao para tipo Token
-
-        this.salvarToken(resultado);
-        this.router.navigate(['buscar-receitas']);
-      }, erro => {
-        console.warn("Usuário ou senha inválido.")
-        console.error(erro);
+      this.authService.authentication(objLogin).subscribe({
+        next: (resultado) => {
+          console.info("Usuário logado: " + resultado);
+          this.authService.salvarToken(resultado);
+          this.router.navigate(['buscar-receitas']);
+        }, error: (erro) => {
+          console.warn("Usuário ou senha inválido: " + erro)
+        }
       });
     } else {
       this.formulario.get("login")?.setValue("");
       this.formulario.get("senha")?.setValue("");
     }
-  }
-
-  salvarToken(token: any) {
-    localStorage.setItem("Token", JSON.stringify(token));
   }
 }

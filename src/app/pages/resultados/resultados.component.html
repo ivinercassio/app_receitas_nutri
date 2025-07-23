@@ -1,0 +1,22 @@
+<div class="container">
+    <h2 align=center class="mt-5 mb-5">Resultados</h2>
+
+    <table class="d-flex justify-content-center mb-3">
+        <tbody>
+            <div *ngFor="let item of receitas; let i = index">
+                <tr class="mb-2 border-1">
+                    <td class="mx-auto col">
+                        <input class="form-control border-0" type="text" [value]="item.titulo">
+                    </td>
+                    <td> <label for="" class="col">Rendimento (porções): {{ item.rendimento }}</label> </td>
+                    <td> <label for="" class="col ms-3">Tempo (min): {{ item.tempo }}</label> </td>
+                    <td class="mx-auto col">
+                        <button (click)="consultarReceita(item.id)" type="button"
+                            class="btn btn-outline-secondary ms-4">Consultar</button>
+                    </td>
+                </tr>
+            </div>
+        </tbody>
+    </table>
+
+</div>

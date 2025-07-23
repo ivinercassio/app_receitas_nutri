@@ -3,7 +3,6 @@ import { Login } from '../../models/login';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { Token } from '../../models/token';
 
 @Component({
   selector: 'app-auth',

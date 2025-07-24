@@ -22,6 +22,10 @@ export class NutricionistaService {
     return this.http.get(`${this.apiUrl}/${id}`, this.authService.gerarCabecalhoHTTP());
   }
 
+  public getByEmail(email: string) {
+    return this.http.get(`${this.apiUrl}/email/${email}`);
+  }
+
   public save(nutricionista: Nutricionista): Observable<Nutricionista> {
     if (nutricionista.id) {
       return this.http.put<Nutricionista>(`${this.apiUrl}/${nutricionista.id}`, nutricionista, this.authService.gerarCabecalhoHTTP());

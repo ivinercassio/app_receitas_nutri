@@ -4,6 +4,7 @@ import { Login } from '../models/login';
 import { Observable } from 'rxjs';
 import { appSettings } from '../app.config';
 import { Token } from '../models/token';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,17 @@ export class AuthService {
     localStorage.removeItem("Token");
   }
 
+  extrairDadosToken(): any | null {
+    const token = this.getToken();
+    if (!token) return null;
+    try {
+      const dadosToken = jwtDecode(token);
+      return dadosToken;
+    } catch (err) {
+      return null;
+    }
+  }
+
   gerarCabecalhoHTTP() {
     let token = this.getToken();
     return {
@@ -39,3 +51,4 @@ export class AuthService {
     };
   }
 }
+

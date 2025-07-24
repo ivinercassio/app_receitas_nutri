@@ -1,33 +1,32 @@
 <nav class="navbar fixed-top">
   <div class="container">
-    <a class="navbar-brand" href="/buscar-receita">Receitas Nutri Icon</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+    <a class="navbar-brand" href="/buscar-receitas"><img src="assets/images/logo_sem_fundo.png" alt="Logo do sistema"></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+      aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
       <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Receitas Nutri</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <div class="d-flex w-100 flex-column">
+          <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Olá, {{ nome }}</h5>
+          <small>{{ nivel }}</small>
+          <hr>
+        </div>
       </div>
 
       <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-          <li class="nav-item">
-            <a class="nav-link" href="#">Home</a>
+
+          <li class="nav-item" *ngFor="let item of menu">
+            <a class="nav-link" [routerLink]="item.rota" routerLinkActive="active" *ngIf="item.niveis.includes(nivel)">
+              {{ item.descricao }}
+            </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/buscar-receitas">Buscar Receitas</a>
+            <a class="nav-link" (click)="logout()">Sair</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Consumo</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Editar Perfil</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Sair</a>
-          </li>
+
         </ul>
       </div>
     </div>

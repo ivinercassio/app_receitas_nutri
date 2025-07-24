@@ -22,6 +22,10 @@ export class PacienteService {
     return this.http.get(`${this.apiUrl}/${id}`, this.authService.gerarCabecalhoHTTP());
   }
 
+  public getByEmail(email: string) {
+    return this.http.get(`${this.apiUrl}/email/${email}`);
+  }
+
   public save(paciente: Paciente): Observable<Paciente> {
     if (paciente.id) {
       return this.http.put<Paciente>(`${this.apiUrl}/${paciente.id}`, paciente, this.authService.gerarCabecalhoHTTP());

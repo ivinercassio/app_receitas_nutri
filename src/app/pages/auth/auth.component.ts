@@ -3,6 +3,7 @@ import { Login } from '../../models/login';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
   selector: 'app-auth',
@@ -15,7 +16,7 @@ export class AuthComponent {
 
   formulario: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private usuarioService: UsuarioService, private router: Router) {
     this.formulario = this.fb.group({
       login: ['', Validators.required],
       senha: ['', Validators.required]
@@ -31,9 +32,13 @@ export class AuthComponent {
     if (this.formulario.valid) {
       this.authService.authentication(objLogin).subscribe({
         next: (resultado) => {
-          console.info("Usuário logado: " + resultado);
           this.authService.salvarToken(resultado);
-          this.router.navigate(['buscar-receitas']);
+          let dadosToken = this.authService.extrairDadosToken();
+          let nivel = dadosToken.roles.replace(/^ROLE_/, '');
+          this.usuarioService.salvarUsuario(objLogin.login, nivel);
+
+          this.router.navigate(['/buscar-receitas']);
+          
         }, error: (erro) => {
           console.warn("Usuário ou senha inválido: " + erro)
         }

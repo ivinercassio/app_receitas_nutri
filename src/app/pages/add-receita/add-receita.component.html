@@ -1,0 +1,88 @@
+<app-menu></app-menu>
+<div class="container">
+    <h2 align=center class="mb-5 mt-5">Adicionar Receita</h2>
+
+    <form class="form" [formGroup]="formulario" (ngSubmit)="salvar()">
+        <div class="row mb-3">
+            <div class="col-5">
+                <label class="form-label" for="tilulo">Titulo</label>
+                <input class="form-control" type="text" name="tilulo" id="tilulo"
+                    placeholder="Digite o título da receita" formControlName="titulo">
+            </div>
+            <div class="col">
+                <label class="mx-auto form-label" for="rendimento">Rendimento (porções)</label>
+                <input class="form-control" type="number" name="rendimento" id="rendimento"
+                    placeholder="Digite número de porções" formControlName="rendimento">
+            </div>
+            <div class="col">
+                <label class="mx-auto form-label" for="tempo">Tempo (min)</label>
+                <input class="form-control " type="number" name="tempo" id="tempo"
+                    placeholder="Digite o tempo de preparo" formControlName="tempo">
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row mb-3">
+            <div class="col">
+                <label for="ingrediente" class="form-label">Ingrediente</label>
+                <div class="col input-group">
+                    <select class="form-select" id="ingrediente" formControlName="selecionado"
+                        (ngModelChange)="onSelectChange($event)">
+                        <option disabled selected>Selecione um ingrediente</option>
+                        <option [ngValue]="elemento" *ngFor="let elemento of ingredientesSalvos">{{ elemento.descricao
+                            }}
+                        </option>
+                    </select>
+                    <span class="input-group-text">
+                        <button type="button" class="border-0" (click)="criarIngrediente()">+</button>
+                    </span>
+                </div>
+            </div>
+            <div class="col">
+                <label class="mx-auto form-label" for="horario">Horário</label>
+                <select class="form-select" id="horario" formControlName="horario">
+                    <option disabled selected>Selecione um horário</option>
+                    <option value="CAFE_DA_MANHA">Café da Manhã</option>
+                    <option value="LANCHE">Lanche</option>
+                    <option value="ALMOCO">Almoço</option>
+                    <option value="JANTA">Janta</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <ol class="list-group list-group-numbered">
+                <li class="list-group-item" *ngFor="let item of ingredientesSelecionados; let i = index">
+                    <div class="d-flex w-100 justify-content-between">
+                        <div class="col">
+                            <p>{{ item.descricao }}</p>
+                        </div>
+                        <div class="col">
+                            <p class="mb-1">Calorias: {{ item.calorias }} kcal</p>
+                        </div>
+                        <div class="col">
+                            <input class="form-control min-auto" type="number" name="quantidade" id="quantidade"
+                                [value]="array[i].quantidade" placeholder="Quantidade">
+                        </div>
+                        <small class="ms-2"> <button type="button" class="btn-close"
+                                (click)="removerIngrediente(item.id)"></button> </small>
+                    </div>
+                </li>
+            </ol>
+        </div>
+
+        <div class="row mb-3">
+            <div>
+                <label for="preparo" class="form-label">Modo de Preparo</label>
+                <textarea class="form-control" id="preparo" formControlName="preparo"
+                    placeholder="Digite o modo de preparo"></textarea>
+            </div>
+        </div>
+
+        <div class="d-grid col-6 mx-auto mt-3 mb-5">
+            <button type="submit" class="btn btn-success">Salvar</button>
+        </div>
+
+    </form>
+</div>

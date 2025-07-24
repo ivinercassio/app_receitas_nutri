@@ -32,8 +32,11 @@ export class UsuarioService {
   public salvarUsuario(login: string, nivel: string): void {
     if (nivel == "NUTRICIONISTA")
       this.getNutricionista(login);
-    else
+    else if (nivel == "PACIENTE")
       this.getPaciente(login);
+    else
+      this.salvarNomeUsuario(nivel);
+    this.salvarLogin(login);
   }
 
   private getNutricionista(login: string) {
@@ -42,7 +45,6 @@ export class UsuarioService {
         let nutricionista = new Nutricionista();
         Object.assign(nutricionista, nutri);
         this.salvarNomeUsuario(nutricionista.nome);
-        
       }, error: (erro) => {
         console.warn("Erro na busca por nutricionista" + erro);
       }
@@ -62,15 +64,25 @@ export class UsuarioService {
     });
   }
 
+  
   private salvarNomeUsuario(nome: string): void {
     localStorage.setItem("NomeUsuario", nome);
   }
-
+  
   public getUsuario(): string {
     return localStorage.getItem("NomeUsuario") || "";
   }
-
+  
   public limparUsuario(): void {
     localStorage.removeItem("NomeUsuario");
+    localStorage.removeItem("Login");
+  }
+
+  private salvarLogin(login: string): void {
+    localStorage.setItem("Login", login);
+  }
+  
+  public getLogin(): string {
+    return localStorage.getItem("Login") || "";
   }
 }

@@ -23,7 +23,7 @@ export class ReceitaIngredienteService {
   }
 
   public findAllByReceitaId(id: number): Observable<ReceitaIngrediente[]> {
-    return this.http.get<ReceitaIngrediente[]>(`${this.apiUrl}/receita/${id}`)
+    return this.http.get<ReceitaIngrediente[]>(`${this.apiUrl}/receita/${id}`);
   }
 
   public getById(id: number) {

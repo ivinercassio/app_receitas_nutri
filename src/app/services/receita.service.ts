@@ -19,7 +19,7 @@ export class ReceitaService {
   }
 
   public getById(id: number) {
-    return this.http.get(`${this.apiUrl}/${id}`, this.authService.gerarCabecalhoHTTP());
+    return this.http.get(`${this.apiUrl}/${id}`);
   }
 
   public save(receita: Receita): Observable<Receita> {

@@ -41,7 +41,6 @@ export class ConsultarReceitaComponent {
                 this.array.forEach(item => {
                   this.ingredientes.push(item.ingredienteDTO);                  
                 });
-                console.log(this.ingredientes);
 
               }, error: (erro) => {
                 console.warn("Erro na busca por receitas-ingredientes. " + erro);

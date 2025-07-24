@@ -19,6 +19,7 @@ export class MenuComponent {
   menu = [
     { descricao: 'Home', rota: '/#', niveis: ['ADMIN', 'NUTRICIONISTA', 'PACIENTE'] },
     { descricao: 'Buscar Receitas', rota: '/buscar-receitas', niveis: ['ADMIN', 'NUTRICIONISTA', 'PACIENTE'] },
+    { descricao: 'Adicionar Receitas', rota: '/add-receitas', niveis: ['ADMIN', 'NUTRICIONISTA'] },
     { descricao: 'Consumo', rota: '#', niveis: ['ADMIN', 'PACIENTE'] },
     { descricao: 'Editar Perfil', rota: '#', niveis: ['ADMIN', 'NUTRICIONISTA', 'PACIENTE'] },
   ];

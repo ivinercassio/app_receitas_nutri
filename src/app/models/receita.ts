@@ -8,5 +8,5 @@ export class Receita {
     tempo!: number;
     preparo!: string;
     horario!: 'CAFE_DA_MANHA' | 'LANCHE' | 'ALMOCO' | 'JANTA';
-    foto?: string;
+    // foto?: string;
 }

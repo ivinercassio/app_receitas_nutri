@@ -52,7 +52,6 @@ export class ResultadosComponent {
   }
 
   consultarReceita(id: number | undefined): void {
-    console.info("consultar receita de id = " + id);
     this.router.navigate(['/consultar-receita', id]);
   }
 }

@@ -23,7 +23,6 @@ export class AddReceitaComponent {
 
   formulario: FormGroup;
   receita!: Receita;
-  nutricionistaDTO!: Nutricionista;
 
   ingredientesSalvos: Ingrediente[] = [];
   ingredientesSelecionados: Ingrediente[] = [];
@@ -34,7 +33,6 @@ export class AddReceitaComponent {
   constructor(private fb: FormBuilder, private ingredienteService: IngredienteService, private receitaService: ReceitaService, private receitaIngredienteService: ReceitaIngredienteService, private usuarioService: UsuarioService, private router: Router, private route: ActivatedRoute) {
     this.formulario = this.fb.group({
       id: [null],
-      nutricionistaDTO: [null],
       titulo: ['', Validators.required],
       rendimento: ['', Validators.required],
       tempo: ['', Validators.required],
@@ -45,10 +43,7 @@ export class AddReceitaComponent {
 
   ngOnInit(): void {
     let id = Number(this.route.snapshot.paramMap.get('id'));
-
     this.receita = new Receita();
-    this.nutricionistaDTO = new Nutricionista();
-
 
     this.ingredienteService.findAll().subscribe({
       next: (retorno) => {
@@ -66,15 +61,16 @@ export class AddReceitaComponent {
 
     // listar ingrediente selcionado
     if (!this.ingredientesSelecionados.includes(selecionado)) {
-      this.novoRelacionamento(selecionado);
+      this.novoRelacionamento(selecionado.id!);
       this.ingredientesSelecionados.push(selecionado);
     }
   }
 
-  novoRelacionamento(ingrediente: Ingrediente) {
-    if (ingrediente != null) {
+  novoRelacionamento(id: number) {
+    if (id != null) {
       let novo = new ReceitaIngrediente();
-      novo.ingredienteDTO = ingrediente;
+      novo.idIngrediente = id;
+      novo.quantidade = "1";
       this.array.push(novo);
     }
   }
@@ -95,41 +91,35 @@ export class AddReceitaComponent {
 
   private salvarReceita(): void {
     let receita = this.carregarReceita();
-    console.log(JSON.stringify(receita));
 
     this.receitaService.save(receita).subscribe({
       next: (retorno) => {
-        if (retorno.id)
-          this.salvarRelacionamentos(retorno);
+        if (retorno.id) {
+          this.salvarRelacionamentos(retorno.id);
+          this.router.navigate(['/consultar-receita', retorno.id]);
+        }
       }, error: (erro) => {
         console.warn("Erro ao salvar receita" + erro);
       }
     });
   }
 
-  private salvarRelacionamentos(receita: Receita): void {
+  private salvarRelacionamentos(id: number): void {
     this.array.forEach(item => {
-      item.quantidade = this.formulario.get('quantidade')?.value;
-      Object.assign(item.receitaDTO, receita);
-
+      item.idReceita = id;
       this.receitaIngredienteService.save(item).subscribe({
-        next: (retorno) => {
-          console.log("Salvo relacionamento id: " + retorno.id);
-        }, error: (erro) => {
+        error: (erro) => {
           console.warn("Erro ao salvar relacionamento: " + item + "\n erro: " + erro);
         }
       });
     });
-
-    alert("Tudo Salvo!");
-    this.router.navigate(['/consultar-receita', receita.id]);
   }
 
   private carregarReceita(): Receita {
-    let retorno = this.usuarioService.getUsuario();
-    if (this.formulario.valid && retorno != undefined) {
+    if (this.formulario.valid) {
       this.receita = this.formulario.value;
-      this.receita.nutricionistaDTO = Object.assign({}, retorno);
+      this.receita.idNutricionista = JSON.parse(this.usuarioService.getDadosUsuario()).id;
+      console.log("id da nutri" + this.receita.idNutricionista);
     }
     return this.receita;
   }

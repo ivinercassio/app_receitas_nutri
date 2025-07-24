@@ -27,7 +27,19 @@ export class MenuComponent {
   constructor(private authService: AuthService, private usuarioService: UsuarioService, private router: Router) { }
 
   ngOnInit(): void {
-    this.nome = this.usuarioService.getUsuarioNome();
+    const dados = JSON.parse(this.usuarioService.getDadosUsuario());
+    if (dados) {
+      try {
+        this.nome = dados.nome;
+      } catch (e) {
+        console.warn("Erro ao fazer parse do usuário:", e);
+        this.logout(); 
+      }
+    } else {
+      console.warn("Dados de usuário não encontrados.");
+      this.logout(); 
+    }
+
     const dadosToken = this.authService.extrairDadosToken();
     if (dadosToken && dadosToken.roles) {
       // Remove "ROLE_" com a empressão regular /^ROLE_/

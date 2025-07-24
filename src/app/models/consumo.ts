@@ -1,7 +1,5 @@
-import { Paciente } from "./paciente";
-
 export class Consumo {
     id?: number;
-    pacienteDTO!: Paciente;
+    idPaciente!: number;
     dataHora!: string;
 }

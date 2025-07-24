@@ -33,32 +33,40 @@ export class UsuarioService {
   // salva o login e o nome do usuario
   public salvarUsuario(login: string, nivel: string): void {
     if (nivel == "NUTRICIONISTA")
-      this.salvarNutricionistaNome(login);
+      this.salvarDadosNutricionista(login);
     else if (nivel == "PACIENTE")
-      this.salvarPacienteNome(login);
+      this.salvarDadosPaciente(login);
     else
-      this.salvarNomeUsuario(nivel);
+      this.salvarDadosUsuario(nivel);
     this.salvarLogin(login);
   }
 
-  private salvarNutricionistaNome(login: string) {
+  private salvarDadosNutricionista(login: string) {
     this.nutriService.getByEmail(login).subscribe({
       next: (nutri) => {
         let nutricionista = new Nutricionista();
         Object.assign(nutricionista, nutri);
-        this.salvarNomeUsuario(nutricionista.nome);
+        let objeto = {
+          id: nutricionista.id,
+          nome: nutricionista.nome
+        }
+        this.salvarDadosUsuario(JSON.stringify(objeto));
       }, error: (erro) => {
         console.warn("Erro na busca por nutricionista" + erro);
       }
     });
   }
 
-  private salvarPacienteNome(login: string) {
+  private salvarDadosPaciente(login: string) {
     this.pacienteService.getByEmail(login).subscribe({
       next: (resultado) => {
         let paciente = new Paciente();
         Object.assign(paciente, resultado);
-        this.salvarNomeUsuario(paciente.nome);
+        let objeto = {
+          id: paciente.id,
+          nome: paciente.nome
+        }
+        this.salvarDadosUsuario(JSON.stringify(objeto));
 
       }, error: (erro) => {
         console.warn("Erro na busca por paciente" + erro);
@@ -66,16 +74,16 @@ export class UsuarioService {
     });
   }
 
-  private salvarNomeUsuario(nome: string): void {
-    localStorage.setItem("NomeUsuario", nome);
+  private salvarDadosUsuario(json: string): void {
+    localStorage.setItem("DadosUsuario", json);
   }
 
-  public getUsuarioNome(): string {
-    return localStorage.getItem("NomeUsuario") || "";
+  public getDadosUsuario(): string {
+    return localStorage.getItem("DadosUsuario") || "";
   }
 
   public limparUsuario(): void {
-    localStorage.removeItem("NomeUsuario");
+    localStorage.removeItem("DadosUsuario");
     localStorage.removeItem("Login");
   }
 
@@ -85,44 +93,5 @@ export class UsuarioService {
 
   public getLogin(): string {
     return localStorage.getItem("Login") || "";
-  }
-
-  public getUsuario(): Nutricionista | Paciente | undefined {
-    let login = this.getLogin();
-    const dadosToken = this.authService.extrairDadosToken();
-    if (dadosToken && dadosToken.roles) {
-      var nivel = dadosToken.roles.replace(/^ROLE_/, '');
-      if (nivel == "NUTRICIONISTA")
-        return this.getNutricionista(login);
-      else if (nivel == "PACIENTE")
-        return this.getPaciente(login);
-    } else {
-      console.warn("Erro em identificar o nivel do usuario pelo token");
-    }
-    return undefined;
-  }
-
-  private getNutricionista(login: string): Nutricionista {
-    var nutri = new Nutricionista();
-    this.nutriService.getByEmail(login).subscribe({
-      next: (resultado) => {
-        Object.assign(nutri, resultado);;
-      }, error: (erro) => {
-        console.warn("Erro na busca por paciente" + erro);
-      }
-    });
-    return nutri;
-  }
-
-  private getPaciente(login: string): Paciente {
-    var paciente = new Paciente();
-    this.pacienteService.getByEmail(login).subscribe({
-      next: (resultado) => {
-        Object.assign(paciente, resultado);;
-      }, error: (erro) => {
-        console.warn("Erro na busca por paciente" + erro);
-      }
-    });
-    return paciente;
-  }
+  }  
 }

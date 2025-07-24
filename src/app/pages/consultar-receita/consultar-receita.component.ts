@@ -28,12 +28,12 @@ export class ConsultarReceitaComponent {
   array: ReceitaIngrediente[] = [];
   ingredientes: Ingrediente[] = [];
 
-  constructor(private activatedRoute: ActivatedRoute, private authService: AuthService, private receitaService: ReceitaService, private receitaIngredienteService: ReceitaIngredienteService, private pacienteReceitaService: PacienteReceitaService, private usuarioService: UsuarioService) { }
+  constructor(private activatedRoute: ActivatedRoute, private authService: AuthService, private receitaService: ReceitaService, private receitaIngredienteService: ReceitaIngredienteService, private pacienteReceitaService: PacienteReceitaService, private usuarioService: UsuarioService, private ingredienteService: IngredienteService) { }
 
   ngOnInit(): void {
     let id = Number(this.activatedRoute.snapshot.paramMap.get('id'));
     const dadosToken = this.authService.extrairDadosToken();
-    if (dadosToken && dadosToken.roles) 
+    if (dadosToken && dadosToken.roles)
       // Remove "ROLE_" com a empressão regular /^ROLE_/
       this.nivel = dadosToken.roles.replace(/^ROLE_/, '');
 
@@ -51,7 +51,15 @@ export class ConsultarReceitaComponent {
 
                 // busca todos os ingredientes da receita
                 this.array.forEach(item => {
-                  this.ingredientes.push(item.ingredienteDTO);                  
+                  this.ingredienteService.getById(item.idIngrediente).subscribe({
+                    next: (retorno) => {
+                      let ingrediente = new Ingrediente();
+                      Object.assign(ingrediente, retorno);
+                      this.ingredientes.push(ingrediente);
+                    }, error: () => {
+                      console.warn("Erro ao carregar ingrediente de id " + item.idIngrediente);
+                    }
+                  });
                 });
 
               }, error: (erro) => {
@@ -69,25 +77,25 @@ export class ConsultarReceitaComponent {
 
   public favoritar(): void {
     // add paciente receita
-    
-    let relacionamento = new PacienteReceita();
-    relacionamento.dataFavoritacao = new Date().toDateString();
-    relacionamento.receitaDTO = this.receita;
-    let retorno = this.usuarioService.getUsuario();
-    if (retorno != undefined)
-      relacionamento.pacienteDTO = retorno;
-    console.log(relacionamento);
-    
-    this.pacienteReceitaService.save(relacionamento).subscribe({
-      next: (retorno) => {
-        if (retorno.id) {
-          document.getElementById('favoritar')?.setAttribute('class', 'disabled');
-          alert("Adicionados nos Favoritos!");
-        }
-      }, error: (erro) => {
-        console.warn("Erro ao salvar receita-paciente. " + erro);
-      }
-    });
+
+    // let relacionamento = new PacienteReceita();
+    // relacionamento.dataFavoritacao = new Date().toDateString();
+    // relacionamento.idReceita = this.receita.id!;
+
+    // relacionamento.idPaciente = this.usuarioService.getIdUsuarioPaciente()!;
+
+    // console.log(relacionamento);
+
+    // this.pacienteReceitaService.save(relacionamento).subscribe({
+    //   next: (retorno) => {
+    //     if (retorno.id) {
+    //       document.getElementById('favoritar')?.setAttribute('class', 'disabled');
+    //       alert("Adicionados nos Favoritos!");
+    //     }
+    //   }, error: (erro) => {
+    //     console.warn("Erro ao salvar receita-paciente. " + erro);
+    //   }
+    // });
 
   }
 

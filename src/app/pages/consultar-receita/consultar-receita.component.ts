@@ -5,9 +5,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ReceitaService } from '../../services/receita.service';
 import { ReceitaIngredienteService } from '../../services/receita-ingrediente.service';
 import { ReceitaIngrediente } from '../../models/receita-ingrediente';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { IngredienteService } from '../../services/ingrediente.service';
 import { MenuComponent } from '../../shared/menu/menu.component';
+import { AuthService } from '../../services/auth.service';
+import { PacienteReceitaService } from '../../services/paciente-receita.service';
+import { PacienteReceita } from '../../models/paciente-receita';
+import { Paciente } from '../../models/paciente';
+import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
   selector: 'app-consultar-receita',
@@ -17,14 +22,21 @@ import { MenuComponent } from '../../shared/menu/menu.component';
   styleUrl: './consultar-receita.component.css'
 })
 export class ConsultarReceitaComponent {
+
+  nivel: string = "";
   receita: Receita = new Receita();
   array: ReceitaIngrediente[] = [];
   ingredientes: Ingrediente[] = [];
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router, private receitaService: ReceitaService, private receitaIngredienteService: ReceitaIngredienteService, private ingredienteService: IngredienteService) { }
+  constructor(private activatedRoute: ActivatedRoute, private authService: AuthService, private receitaService: ReceitaService, private receitaIngredienteService: ReceitaIngredienteService, private pacienteReceitaService: PacienteReceitaService, private usuarioService: UsuarioService) { }
 
   ngOnInit(): void {
     let id = Number(this.activatedRoute.snapshot.paramMap.get('id'));
+    const dadosToken = this.authService.extrairDadosToken();
+    if (dadosToken && dadosToken.roles) 
+      // Remove "ROLE_" com a empressão regular /^ROLE_/
+      this.nivel = dadosToken.roles.replace(/^ROLE_/, '');
+
     if (id) {
       // carrega a receita
       this.receitaService.getById(id).subscribe({
@@ -53,5 +65,33 @@ export class ConsultarReceitaComponent {
         }
       });
     }
+  }
+
+  public favoritar(): void {
+    // add paciente receita
+    
+    let relacionamento = new PacienteReceita();
+    relacionamento.dataFavoritacao = new Date().toDateString();
+    relacionamento.receitaDTO = this.receita;
+    let retorno = this.usuarioService.getUsuario();
+    if (retorno != undefined)
+      relacionamento.pacienteDTO = retorno;
+    console.log(relacionamento);
+    
+    this.pacienteReceitaService.save(relacionamento).subscribe({
+      next: (retorno) => {
+        if (retorno.id) {
+          document.getElementById('favoritar')?.setAttribute('class', 'disabled');
+          alert("Adicionados nos Favoritos!");
+        }
+      }, error: (erro) => {
+        console.warn("Erro ao salvar receita-paciente. " + erro);
+      }
+    });
+
+  }
+
+  public registrarConsumo(): void {
+
   }
 }

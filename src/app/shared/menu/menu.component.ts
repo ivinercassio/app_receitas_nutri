@@ -27,7 +27,7 @@ export class MenuComponent {
   constructor(private authService: AuthService, private usuarioService: UsuarioService, private router: Router) { }
 
   ngOnInit(): void {
-    this.nome = this.usuarioService.getUsuario();
+    this.nome = this.usuarioService.getUsuarioNome();
     const dadosToken = this.authService.extrairDadosToken();
     if (dadosToken && dadosToken.roles) {
       // Remove "ROLE_" com a empressão regular /^ROLE_/

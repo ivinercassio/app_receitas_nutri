@@ -27,8 +27,7 @@
             <div class="col">
                 <label for="ingrediente" class="form-label">Ingrediente</label>
                 <div class="col input-group">
-                    <select class="form-select" id="ingrediente" formControlName="selecionado"
-                        (ngModelChange)="onSelectChange($event)">
+                    <select class="form-select" id="ingrediente" (change)="onSelectChange($event)">
                         <option disabled selected>Selecione um ingrediente</option>
                         <option [ngValue]="elemento" *ngFor="let elemento of ingredientesSalvos">{{ elemento.descricao
                             }}

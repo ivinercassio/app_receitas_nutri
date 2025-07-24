@@ -4,20 +4,25 @@
 
     <form class="form">
         <div class="row mb-3">
-            <div class="col-3">
+            <div class="col-4">
                 <label class="form-label" for="tilulo">Titulo</label>
                 <input class="form-control" type="text" name="tilulo" id="tilulo" [value]="receita.titulo" readonly>
             </div>
-            <div class="col-3">
+            <div class="col">
                 <label class="mx-auto form-label" for="rendimento">Rendimento (porções)</label>
-                <input class="form-control" type="text" name="rendimento" id="rendimento" [value]="receita.rendimento" readonly>
+                <input class="form-control" type="text" name="rendimento" id="rendimento" [value]="receita.rendimento"
+                    readonly>
             </div>
-            <div class="col-3">
+            <div class="col">
                 <label class="mx-auto form-label" for="tempo">Tempo (min)</label>
-                <input class="form-control" type="text" name="tempo" id="tempo" [value]="receita.tempo" readonly>
+                <input class="form-control" type="number" name="tempo" id="tempo" [value]="receita.tempo" readonly>
+            </div>
+            <div class="col">
+                <label class="mx-auto form-label" for="horario">Horario</label>
+                <input class="form-control" type="text" name="horario" id="horario" [value]="receita.horario" readonly>
             </div>
         </div>
-        
+
         <hr>
 
         <div class="row mb-3">
@@ -36,6 +41,15 @@
             <div class="form-floating">
                 <textarea class="form-control" id="preparo" readonly>{{ receita.preparo }}</textarea>
                 <label for="preparo">Modo de Preparo</label>
+            </div>
+        </div>
+
+        <div class="row mt-3 mb-5 d-flex justify-content-between" *ngIf="nivel == 'PACIENTE'">
+            <div class="d-grid col-3">
+                <button type="button" class="btn btn-warning" id="favoritar" (click)="favoritar()">Favoritar</button>
+            </div>
+            <div class="d-grid col-3">
+                <button type="button" class="btn btn-secondary" id="registrarConsumo" (click)="registrarConsumo()">Registrar Consumo</button>
             </div>
         </div>
     </form>

@@ -1,9 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ReceitaService } from '../../services/receita.service';
 import { Router } from '@angular/router';
-import { ReceitaIngredienteService } from '../../services/receita-ingrediente.service';
 import { MenuComponent } from '../../shared/menu/menu.component';
 
 @Component({
@@ -36,6 +34,7 @@ export class BuscarReceitasComponent {
   // }
 
   buscar(): void {
-    this.router.navigate(["/resultados", this.ingrediente]);
+    if (this.ingrediente != "")
+      this.router.navigate(["/resultados", this.ingrediente]);
   }
 }

@@ -32,6 +32,7 @@ export class ConsultarReceitaComponent {
 
   pacienteReceita!: PacienteReceita;
   btnFavoritar: boolean = false;
+  btnDesabilitarDesfavoritar: boolean = false;
 
   constructor(private activatedRoute: ActivatedRoute, private authService: AuthService, private receitaService: ReceitaService, private receitaIngredienteService: ReceitaIngredienteService, private pacienteReceitaService: PacienteReceitaService, private usuarioService: UsuarioService, private ingredienteService: IngredienteService, private consumoService: ConsumoService, private router: Router) { }
 
@@ -67,13 +68,12 @@ export class ConsultarReceitaComponent {
                   });
                 });
 
+                this.verificarFavoritado();
               }, error: (erro) => {
                 console.warn("Erro na busca por receitas-ingredientes. " + erro);
               }
             });
           }
-          if (this.nivel == "PACIENTE")
-            this.verificarFavoritado();
 
         }, error: (erro) => {
           alert("Erro na busca por receita. " + erro);
@@ -85,7 +85,7 @@ export class ConsultarReceitaComponent {
   }
 
   private verificarFavoritado(): void {
-    let idPaciente;
+    var idPaciente: number;
     const dados = JSON.parse(this.usuarioService.getDadosUsuario());
     if (dados) {
       try {
@@ -100,15 +100,14 @@ export class ConsultarReceitaComponent {
     this.pacienteReceitaService.findAll().subscribe({
       next: (list) => {
         if (list[0] != null) {
-          let position = list.findIndex(item => item.idReceita == this.receita.id && item.idPaciente == idPaciente!);
-          if (position) {
-            this.pacienteReceita = new PacienteReceita;
-            this.pacienteReceita.id = list[position].id;
-            this.pacienteReceita.idReceita = list[position].idReceita;
-            this.pacienteReceita.idPaciente = list[position].idPaciente;
-            this.pacienteReceita.dataFavoritacao = list[position].dataFavoritacao;
-            Object.assign(this.pacienteReceita, list[position]);
+          let relacionamento = list.filter(item => item.idReceita == this.receita.id && item.idPaciente == idPaciente!);
+          this.pacienteReceita = new PacienteReceita();
+          if (relacionamento[0] != null) {
+            Object.assign(this.pacienteReceita, relacionamento[0]);
             this.btnFavoritar = false;
+          } else {
+            this.pacienteReceita.idPaciente = idPaciente;
+            this.btnFavoritar = true;
           }
         }
       }, error: (erro) => {
@@ -120,8 +119,7 @@ export class ConsultarReceitaComponent {
   public favoritar(): void {
     let relacionamento = new PacienteReceita();
     relacionamento.dataFavoritacao = new Date().toDateString();
-    relacionamento.idReceita = this.receita.id!;
-
+    relacionamento.idReceita = Number(this.activatedRoute.snapshot.paramMap.get('id'));
     const dados = JSON.parse(this.usuarioService.getDadosUsuario());
     if (dados) {
       try {
@@ -133,10 +131,12 @@ export class ConsultarReceitaComponent {
       console.warn("Dados de usuário não encontrados.");
     }
 
+    console.log(relacionamento);
+
     this.pacienteReceitaService.save(relacionamento).subscribe({
       next: (retorno) => {
         if (retorno.id) {
-          this.pacienteReceita = new PacienteReceita;
+          this.pacienteReceita = new PacienteReceita();
           Object.assign(this.pacienteReceita, retorno);
           this.btnFavoritar = false;
         }
@@ -147,28 +147,31 @@ export class ConsultarReceitaComponent {
   }
 
   public desfavoritar(): void {
+    this.verificarFavoritado();
+
     this.pacienteReceitaService.deleteById(this.pacienteReceita.id!).subscribe({
       next: () => {
         this.btnFavoritar = true;
 
       }, error: (erro) => {
         console.warn("Erro ao deletar receita-paciente. " + erro);
+        alert("Consumo já registrado. BD barra desfavoritar!");
+        this.btnDesabilitarDesfavoritar = true;
       }
     });
   }
 
   public registrarConsumo(): void {
     let consumo = new Consumo();
-    const dados = JSON.parse(this.usuarioService.getDadosUsuario());
-    if (dados) {
-      try {
-        consumo.dataHora = String(new Date());
-        consumo.idPaciente = dados.id;
-      } catch (e) {
-        console.warn("Erro ao fazer parse do usuário:", e);
-      }
+    consumo.dataHora = String(new Date());
+    if (this.pacienteReceita.id != null) {
+      consumo.idPacienteReceita = this.pacienteReceita.id;
+      console.info("conheco o idpacientereceita " + this.pacienteReceita.id);
     } else {
-      console.warn("Dados de usuário não encontrados.");
+      console.info("nao sei idpacientereceita " + this.pacienteReceita.id);
+      this.favoritar();
+      consumo.idPacienteReceita = this.pacienteReceita.id!;
+      this.btnFavoritar = true;
     }
 
     this.consumoService.save(consumo).subscribe({

@@ -1,5 +1,5 @@
 export class Consumo {
     id?: number;
-    idPaciente!: number;
+    idPacienteReceita!: number;
     dataHora!: string;
 }

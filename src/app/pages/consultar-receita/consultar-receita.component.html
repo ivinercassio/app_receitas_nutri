@@ -53,7 +53,7 @@
             } @else {
             <div class="d-grid col-3">
                 <button type="button" class="btn btn-warning" id="desfavoritar" (click)="desfavoritar()"
-                    [disabled]="btnFavoritar">Desfavoritar</button>
+                    [disabled]="btnFavoritar || btnDesabilitarDesfavoritar">Desfavoritar</button>
             </div>
             }
             <div class="d-grid col-3">

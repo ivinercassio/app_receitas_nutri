@@ -21,6 +21,8 @@ export class MenuComponent {
     { descricao: 'Buscar Receitas', rota: '/buscar-receitas', niveis: ['ADMIN', 'NUTRICIONISTA', 'PACIENTE'] },
     { descricao: 'Adicionar Receitas', rota: '/add-receitas', niveis: ['ADMIN', 'NUTRICIONISTA'] },
     { descricao: 'Favoritos', rota: '/favoritos', niveis: ['ADMIN', 'PACIENTE'] },
+    { descricao: 'Consumo', rota: '/consumo', niveis: ['ADMIN', 'PACIENTE'] },
+    { descricao: 'Consultar Pacientes', rota: '/consultar-pacientes', niveis: ['ADMIN', 'NUTRICIONISTA'] },
     { descricao: 'Editar Perfil', rota: '#', niveis: ['ADMIN', 'NUTRICIONISTA', 'PACIENTE'] },
   ];
 

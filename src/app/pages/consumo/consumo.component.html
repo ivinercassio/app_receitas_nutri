@@ -1,6 +1,6 @@
 <app-menu></app-menu>
 <div class="container">
-    <h2 align=center class="mt-5 mb-5">Favoritos</h2>
+    <h2 align=center class="mt-5 mb-5">Consumo</h2>
 
     <table class="d-flex justify-content-center mb-3">
         <tbody>
@@ -9,16 +9,16 @@
                     <div class="mb-2 row">
                         <div class="col">
                             <label for="titulo" class="form-label">Titulo</label>
-                            <input class="form-control" type="text" name="titulo" id="titulo" [value]="item.titulo">
+                            <input class="form-control" type="text" name="titulo" id="titulo" [value]="item.titulo" readonly>
                         </div>
                         <div class="col">
                             <label for="rendimento" class="form-label">Rendimento (porções)</label>
                             <input type="text" name="rendimento" id="rendimento" class="form-control"
-                                [value]="item.rendimento">
+                                [value]="item.rendimento" readonly>
                         </div>
                         <div class="col">
                             <label for="tempo" class="form-label ms-3">Tempo (min)</label>
-                            <input type="text" name="tempo" id="tempo" class="form-control" [value]="item.tempo">
+                            <input type="text" name="tempo" id="tempo" class="form-control" [value]="item.tempo" readonly>
                         </div>
                         <div class="col mt-4">
                             <button (click)="consultarReceita(item.id)" type="button"

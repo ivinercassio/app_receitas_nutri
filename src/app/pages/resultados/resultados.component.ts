@@ -28,7 +28,7 @@ export class ResultadosComponent {
       // buca os relacionamentos receitas-ingredientes
       this.receitaIngredienteService.findAllByIngredienteDescricao(ingrediente).subscribe({
         next: (resultado) => {
-          if (resultado[0] == null) {
+          if (resultado.length == 0) {
             alert("Nenhum resultado encontrado");
             this.router.navigate(["/buscar-receitas"]);
           }
@@ -37,7 +37,7 @@ export class ResultadosComponent {
           // busca as receitas encontradas
           this.array.forEach(item => {
             if (item.id)
-              this.receitaService.getById(item.id).subscribe({
+              this.receitaService.getById(item.idReceita).subscribe({
                 next: (receita) => {
                   let objReceita = new Receita();
                   Object.assign(objReceita, receita);

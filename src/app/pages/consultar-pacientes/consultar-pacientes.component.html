@@ -1,0 +1,30 @@
+<app-menu></app-menu>
+<div class="container">
+    <h2 align=center class="mt-5 mb-5">Meus Pacientes</h2>
+
+    <table class="d-flex justify-content-center mb-3">
+        <tbody>
+            <div *ngFor="let item of pacientes; let i = index">
+                <tr>
+                    <div class="mb-2 row">
+                        <div class="col">
+                            <label for="nome" class="form-label">Titulo</label>
+                            <input class="form-control" type="text" name="nome" id="nome" [value]="item.nome">
+                        </div>
+                        <div class="col">
+                            <label for="email" class="form-label">E-mail</label>
+                            <input type="text" name="email" id="email" class="form-control"
+                                [value]="item.email">
+                        </div>
+                        <div class="col mt-4">
+                            <button (click)="consultarConsumo(item.id)" type="button"
+                                class="btn btn-secondary ms-4">Consultar</button>
+                        </div>
+                    </div>
+                </tr>
+                <hr>
+            </div>
+        </tbody>
+    </table>
+
+</div>

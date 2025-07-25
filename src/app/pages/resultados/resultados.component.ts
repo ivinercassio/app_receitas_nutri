@@ -28,6 +28,10 @@ export class ResultadosComponent {
       // buca os relacionamentos receitas-ingredientes
       this.receitaIngredienteService.findAllByIngredienteDescricao(ingrediente).subscribe({
         next: (resultado) => {
+          if (resultado[0] == null) {
+            alert("Nenhum resultado encontrado");
+            this.router.navigate(["/buscar-receitas"]);
+          }
           this.array = resultado;
 
           // busca as receitas encontradas

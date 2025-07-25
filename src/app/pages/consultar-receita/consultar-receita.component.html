@@ -45,12 +45,30 @@
         </div>
 
         <div class="row mt-3 mb-5 d-flex justify-content-between" *ngIf="nivel == 'PACIENTE'">
+            @if (btnFavoritar) {
             <div class="d-grid col-3">
-                <button type="button" class="btn btn-warning" id="favoritar" (click)="favoritar()">Favoritar</button>
+                <button type="button" class="btn btn-warning" id="favoritar" (click)="favoritar()"
+                    [hidden]="!btnFavoritar">Favoritar</button>
             </div>
+            } @else {
             <div class="d-grid col-3">
-                <button type="button" class="btn btn-secondary" id="registrarConsumo" (click)="registrarConsumo()">Registrar Consumo</button>
+                <button type="button" class="btn btn-warning" id="desfavoritar" (click)="desfavoritar()"
+                    [disabled]="btnFavoritar">Desfavoritar</button>
             </div>
+            }
+            <div class="d-grid col-3">
+                <button type="button" class="btn btn-secondary" id="registrarConsumo"
+                    (click)="registrarConsumo()">Registrar Consumo</button>
+            </div>
+        </div>
+
+        <div class="row mt-3 mb-5 d-flex justify-content-between" *ngIf="nivel == 'NUTRICIONISTA'">
+            <div class="d-grid col-3">
+                <button type="button" class="btn btn-warning" id="editar" (click)="editar()">Editar</button>
+            </div>
+            <!-- <div class="d-grid col-3">
+                <button type="button" class="btn btn-danger" id="excluir" (click)="excluir()">Excluir</button>
+            </div> -->
         </div>
     </form>
 </div>

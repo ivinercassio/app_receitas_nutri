@@ -9,6 +9,7 @@ export const routes: Routes = [
     { path: '', component: AuthComponent },
     { path: 'buscar-receitas', component: BuscarReceitasComponent },
     { path: 'add-receitas', component: AddReceitaComponent },
+    { path: 'add-receitas/:id', component: AddReceitaComponent },
     { path: 'resultados/:ingrediente', component: ResultadosComponent },
     { path: 'consultar-receita/:id', component: ConsultarReceitaComponent },
 ];

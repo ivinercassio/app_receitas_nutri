@@ -1,23 +1,23 @@
 <app-menu></app-menu>
 <div class="container">
-    <h2 align=center class="mb-5 mt-5">Adicionar Receita</h2>
+    <h2 align=center class="mb-5 mt-5">Cadastro Receita</h2>
 
     <form class="form" [formGroup]="formulario" (ngSubmit)="salvar()">
         <div class="row mb-3">
             <div class="col-5">
                 <label class="form-label" for="tilulo">Titulo</label>
                 <input class="form-control" type="text" name="tilulo" id="tilulo"
-                    placeholder="Digite o título da receita" formControlName="titulo">
+                    placeholder="Digite o título da receita" formControlName="titulo" [value]="receita.titulo">
             </div>
             <div class="col">
                 <label class="mx-auto form-label" for="rendimento">Rendimento (porções)</label>
                 <input class="form-control" type="number" name="rendimento" id="rendimento"
-                    placeholder="Digite número de porções" formControlName="rendimento">
+                    placeholder="Digite número de porções" formControlName="rendimento" [value]="receita.rendimento">
             </div>
             <div class="col">
                 <label class="mx-auto form-label" for="tempo">Tempo (min)</label>
                 <input class="form-control " type="number" name="tempo" id="tempo"
-                    placeholder="Digite o tempo de preparo" formControlName="tempo">
+                    placeholder="Digite o tempo de preparo" formControlName="tempo" [value]="receita.tempo">
             </div>
         </div>
 
@@ -40,7 +40,7 @@
             </div>
             <div class="col">
                 <label class="mx-auto form-label" for="horario">Horário</label>
-                <select class="form-select" id="horario" formControlName="horario">
+                <select class="form-select" id="horario" formControlName="horario" [value]="receita.horario">
                     <option disabled selected>Selecione um horário</option>
                     <option value="CAFE_DA_MANHA">Café da Manhã</option>
                     <option value="LANCHE">Lanche</option>
@@ -61,7 +61,9 @@
                             <p class="mb-1">Calorias: {{ item.calorias }} kcal</p>
                         </div>
                         <div class="col">
-                            <input class="form-control min-auto" type="text" name="quantidade" id="quantidade"
+                            <!-- <input class="form-control min-auto" type="text" name="quantidade"
+                                [value]="array[i].quantidade" placeholder="Quantidade"> -->
+                            <input class="form-control min-auto" type="text" name="quantidade" [id]="array[i].id"
                                 [value]="array[i].quantidade" placeholder="Quantidade">
                         </div>
                         <small class="ms-2"> <button type="button" class="btn-close"
@@ -75,7 +77,7 @@
             <div>
                 <label for="preparo" class="form-label">Modo de Preparo</label>
                 <textarea class="form-control" id="preparo" formControlName="preparo"
-                    placeholder="Digite o modo de preparo"></textarea>
+                    placeholder="Digite o modo de preparo" [value]="receita.preparo"></textarea>
             </div>
         </div>
 

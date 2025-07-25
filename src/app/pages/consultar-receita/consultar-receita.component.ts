@@ -13,6 +13,8 @@ import { PacienteReceitaService } from '../../services/paciente-receita.service'
 import { PacienteReceita } from '../../models/paciente-receita';
 import { Paciente } from '../../models/paciente';
 import { UsuarioService } from '../../services/usuario.service';
+import { Consumo } from '../../models/consumo';
+import { ConsumoService } from '../../services/consumo.service';
 
 @Component({
   selector: 'app-consultar-receita',
@@ -28,7 +30,10 @@ export class ConsultarReceitaComponent {
   array: ReceitaIngrediente[] = [];
   ingredientes: Ingrediente[] = [];
 
-  constructor(private activatedRoute: ActivatedRoute, private authService: AuthService, private receitaService: ReceitaService, private receitaIngredienteService: ReceitaIngredienteService, private pacienteReceitaService: PacienteReceitaService, private usuarioService: UsuarioService, private ingredienteService: IngredienteService) { }
+  pacienteReceita!: PacienteReceita;
+  btnFavoritar: boolean = false;
+
+  constructor(private activatedRoute: ActivatedRoute, private authService: AuthService, private receitaService: ReceitaService, private receitaIngredienteService: ReceitaIngredienteService, private pacienteReceitaService: PacienteReceitaService, private usuarioService: UsuarioService, private ingredienteService: IngredienteService, private consumoService: ConsumoService, private router: Router) { }
 
   ngOnInit(): void {
     let id = Number(this.activatedRoute.snapshot.paramMap.get('id'));
@@ -67,39 +72,143 @@ export class ConsultarReceitaComponent {
               }
             });
           }
+          if (this.nivel == "PACIENTE")
+            this.verificarFavoritado();
 
         }, error: (erro) => {
-          console.warn("Erro na busca por receita. " + erro);
+          alert("Erro na busca por receita. " + erro);
+          this.router.navigate(['/buscar-receitas']);
         }
       });
+
     }
   }
 
+  private verificarFavoritado(): void {
+    let idPaciente;
+    const dados = JSON.parse(this.usuarioService.getDadosUsuario());
+    if (dados) {
+      try {
+        idPaciente = dados.id;
+      } catch (e) {
+        console.warn("Erro ao fazer parse do usuário:", e);
+      }
+    } else {
+      console.warn("Dados de usuário não encontrados.");
+    }
+
+    this.pacienteReceitaService.findAll().subscribe({
+      next: (list) => {
+        if (list[0] != null) {
+          let position = list.findIndex(item => item.idReceita == this.receita.id && item.idPaciente == idPaciente!);
+          if (position) {
+            this.pacienteReceita = new PacienteReceita;
+            this.pacienteReceita.id = list[position].id;
+            this.pacienteReceita.idReceita = list[position].idReceita;
+            this.pacienteReceita.idPaciente = list[position].idPaciente;
+            this.pacienteReceita.dataFavoritacao = list[position].dataFavoritacao;
+            Object.assign(this.pacienteReceita, list[position]);
+            this.btnFavoritar = false;
+          }
+        }
+      }, error: (erro) => {
+        console.warn("Erro ao salvar receita-paciente. " + erro);
+      }
+    });
+  }
+
   public favoritar(): void {
-    // add paciente receita
+    let relacionamento = new PacienteReceita();
+    relacionamento.dataFavoritacao = new Date().toDateString();
+    relacionamento.idReceita = this.receita.id!;
 
-    // let relacionamento = new PacienteReceita();
-    // relacionamento.dataFavoritacao = new Date().toDateString();
-    // relacionamento.idReceita = this.receita.id!;
+    const dados = JSON.parse(this.usuarioService.getDadosUsuario());
+    if (dados) {
+      try {
+        relacionamento.idPaciente = dados.id;
+      } catch (e) {
+        console.warn("Erro ao fazer parse do usuário:", e);
+      }
+    } else {
+      console.warn("Dados de usuário não encontrados.");
+    }
 
-    // relacionamento.idPaciente = this.usuarioService.getIdUsuarioPaciente()!;
+    this.pacienteReceitaService.save(relacionamento).subscribe({
+      next: (retorno) => {
+        if (retorno.id) {
+          this.pacienteReceita = new PacienteReceita;
+          Object.assign(this.pacienteReceita, retorno);
+          this.btnFavoritar = false;
+        }
+      }, error: (erro) => {
+        console.warn("Erro ao salvar receita-paciente. " + erro);
+      }
+    });
+  }
 
-    // console.log(relacionamento);
+  public desfavoritar(): void {
+    this.pacienteReceitaService.deleteById(this.pacienteReceita.id!).subscribe({
+      next: () => {
+        this.btnFavoritar = true;
 
-    // this.pacienteReceitaService.save(relacionamento).subscribe({
-    //   next: (retorno) => {
-    //     if (retorno.id) {
-    //       document.getElementById('favoritar')?.setAttribute('class', 'disabled');
-    //       alert("Adicionados nos Favoritos!");
-    //     }
-    //   }, error: (erro) => {
-    //     console.warn("Erro ao salvar receita-paciente. " + erro);
-    //   }
-    // });
-
+      }, error: (erro) => {
+        console.warn("Erro ao deletar receita-paciente. " + erro);
+      }
+    });
   }
 
   public registrarConsumo(): void {
+    let consumo = new Consumo();
+    const dados = JSON.parse(this.usuarioService.getDadosUsuario());
+    if (dados) {
+      try {
+        consumo.dataHora = String(new Date());
+        consumo.idPaciente = dados.id;
+      } catch (e) {
+        console.warn("Erro ao fazer parse do usuário:", e);
+      }
+    } else {
+      console.warn("Dados de usuário não encontrados.");
+    }
 
+    this.consumoService.save(consumo).subscribe({
+      next: (retorno) => {
+        if (retorno.id) {
+          alert("Consumo registrado!");
+        }
+      }, error: (erro) => {
+        console.warn("Erro ao salvar receita-paciente. " + erro);
+      }
+    });
   }
+
+  public editar(): void {
+    this.router.navigate(["/add-receitas", this.receita.id]);
+  }
+
+  // public excluir(): void {
+  //   this.receitaIngredienteService.findAllByReceitaId(this.receita.id!).subscribe({
+  //     next: (array) => {
+
+  //       array.forEach(item => {
+  //         this.receitaIngredienteService.deleteById(item.id!).subscribe({
+  //           error: (erro) => {
+  //             console.warn("Erro ao deletar receita-ingrediente. " + erro);
+  //           }
+  //         });
+  //       });
+
+  //       this.receitaService.deleteById(this.receita.id!).subscribe({
+  //         next: () => {
+  //           this.router.navigate(["/buscar-receitas"]);
+  //         }, error: (erro) => {
+  //           console.warn("Erro ao deletar receita. " + erro);
+  //         }
+  //       });
+
+  //     }, error: (erro) => {
+  //       console.warn("Erro ao buscar receita-ingrediente. " + erro);
+  //     }
+  //   });
+  // }
 }

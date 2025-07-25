@@ -10,4 +10,5 @@ export const appConfig: ApplicationConfig = {
 
 export const appSettings = {
   apiUrl: "http://localhost:8080"
+  // apiUrl: "https://api-receitas-nutri.onrender.com"
 };

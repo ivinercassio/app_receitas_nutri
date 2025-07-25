@@ -44,6 +44,39 @@ export class AddReceitaComponent {
   ngOnInit(): void {
     let id = Number(this.route.snapshot.paramMap.get('id'));
     this.receita = new Receita();
+    if (id) {
+      // carregando receita para editacao 
+      this.receitaService.getById(id).subscribe({
+        next: (retorno) => {
+          Object.assign(this.receita, retorno);
+        }, error: (erro) => {
+          console.warn("Erro ao carregar receita" + erro);
+        }
+      });
+
+      this.receitaIngredienteService.findAllByReceitaId(id).subscribe({
+        next: (retorno) => {
+          this.array = retorno;
+          if (this.array[0] != null) {
+
+            this.array.forEach(item => {
+              this.ingredienteService.getById(item.idIngrediente).subscribe({
+                next: (ingrediente) => {
+                  let objeto = new Ingrediente();
+                  Object.assign(objeto, ingrediente);
+                  this.ingredientesSelecionados.push(objeto);
+                }, error: (erro) => {
+                  console.log("Erro ao carregar ingrediente de id " + item.idIngrediente);
+                }
+              });
+            });
+
+          }
+        }, error: (erro) => {
+          console.log("Erro ao carregar ingrediente-receita. " + erro);
+        }
+      });
+    }
 
     this.ingredienteService.findAll().subscribe({
       next: (retorno) => {
@@ -85,7 +118,7 @@ export class AddReceitaComponent {
   }
 
   salvar(): void {
-    if (this.formulario.valid)
+    if (this.formulario.valid || this.receita.id) 
       this.salvarReceita();
   }
 
@@ -105,21 +138,28 @@ export class AddReceitaComponent {
   }
 
   private salvarRelacionamentos(id: number): void {
-    this.array.forEach(item => {
+    this.array.forEach((item, index) => {
       item.idReceita = id;
+      // console.warn(this.array[]);
+      // item.quantidade = document.getElementById(`${this.array[index].id}`)?.getAttribute("value")!;
       this.receitaIngredienteService.save(item).subscribe({
         error: (erro) => {
-          console.warn("Erro ao salvar relacionamento: " + item + "\n erro: " + erro);
+          console.warn("Erro ao salvar relacionamento: " + item + "\n erro: " + erro + "\n quantidade: " + document.getElementById(`${this.array[index].id}`)?.getAttribute("value"));
         }
       });
     });
+    // if (this.receita.id) { // caso edicao
+    //   console.log("entrei")
+    //   this.
+
+    // } else { // caso criacao
+    // }
   }
 
   private carregarReceita(): Receita {
     if (this.formulario.valid) {
       this.receita = this.formulario.value;
       this.receita.idNutricionista = JSON.parse(this.usuarioService.getDadosUsuario()).id;
-      console.log("id da nutri" + this.receita.idNutricionista);
     }
     return this.receita;
   }

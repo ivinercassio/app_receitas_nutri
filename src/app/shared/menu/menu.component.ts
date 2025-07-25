@@ -17,10 +17,10 @@ export class MenuComponent {
   nome: string = "";
 
   menu = [
-    { descricao: 'Home', rota: '/#', niveis: ['ADMIN', 'NUTRICIONISTA', 'PACIENTE'] },
+    // { descricao: 'Home', rota: '/#', niveis: ['ADMIN', 'NUTRICIONISTA', 'PACIENTE'] },
     { descricao: 'Buscar Receitas', rota: '/buscar-receitas', niveis: ['ADMIN', 'NUTRICIONISTA', 'PACIENTE'] },
     { descricao: 'Adicionar Receitas', rota: '/add-receitas', niveis: ['ADMIN', 'NUTRICIONISTA'] },
-    { descricao: 'Consumo', rota: '#', niveis: ['ADMIN', 'PACIENTE'] },
+    { descricao: 'Favoritos', rota: '/favoritos', niveis: ['ADMIN', 'PACIENTE'] },
     { descricao: 'Editar Perfil', rota: '#', niveis: ['ADMIN', 'NUTRICIONISTA', 'PACIENTE'] },
   ];
 

@@ -4,6 +4,7 @@ import { BuscarReceitasComponent } from './pages/buscar-receitas/buscar-receitas
 import { ResultadosComponent } from './pages/resultados/resultados.component';
 import { ConsultarReceitaComponent } from './pages/consultar-receita/consultar-receita.component';
 import { AddReceitaComponent } from './pages/add-receita/add-receita.component';
+import { FavoritosComponent } from './pages/favoritos/favoritos.component';
 
 export const routes: Routes = [
     { path: '', component: AuthComponent },
@@ -12,4 +13,5 @@ export const routes: Routes = [
     { path: 'add-receitas/:id', component: AddReceitaComponent },
     { path: 'resultados/:ingrediente', component: ResultadosComponent },
     { path: 'consultar-receita/:id', component: ConsultarReceitaComponent },
+    { path: 'favoritos', component: FavoritosComponent },
 ];

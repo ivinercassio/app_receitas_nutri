@@ -7,6 +7,8 @@ import { UsuarioService } from '../../services/usuario.service';
 import { ReceitaService } from '../../services/receita.service';
 import { PacienteReceitaService } from '../../services/paciente-receita.service';
 import { PacienteReceita } from '../../models/paciente-receita';
+import { ConsumoService } from '../../services/consumo.service';
+import { Consumo } from '../../models/consumo';
 
 @Component({
   selector: 'app-consumo',
@@ -19,8 +21,11 @@ export class ConsumoComponent {
 
   array: PacienteReceita[] = [];
   receitas: Receita[] = [];
+  listConsumo: Consumo[] = [];
 
-  constructor(private router: Router, private usuarioService: UsuarioService, private pacienteReceitaService: PacienteReceitaService, private receitaService: ReceitaService) { }
+  idReceitaTemp: number = -1;
+
+  constructor(private router: Router, private usuarioService: UsuarioService, private pacienteReceitaService: PacienteReceitaService, private receitaService: ReceitaService, private consumoService: ConsumoService) { }
 
   ngOnInit(): void {
     const dados = JSON.parse(this.usuarioService.getDadosUsuario());
@@ -34,6 +39,14 @@ export class ConsumoComponent {
             this.array = list.filter(item => item.idPaciente == id);
 
             list.forEach(item => {
+              // buscar os consumos atraves dos idPacienteReceita
+              this.consumoService.findAll().subscribe({
+                next: (listConsumo) => {
+                  this.listConsumo = listConsumo.filter(consumo => consumo.idPacienteReceita == item.id);
+                }
+              });
+
+              // busca cada receita do relacionamento paciente-receita
               this.receitaService.getById(item.idReceita).subscribe({
                 next: (receita) => {
                   let objeto = new Receita();
@@ -51,7 +64,26 @@ export class ConsumoComponent {
     } else {
       console.warn("Dados de usuário não encontrados.");
     }
+  }
 
+  tituloReceita(idConsumo: number | undefined, data: string): string {
+    if (!idConsumo || !data)
+      return "";
+    const consumo = this.listConsumo.find(item => item.id == idConsumo && item.dataHora == data);
+    const relacionamento = this.array.find(item => item.id == consumo?.idPacienteReceita);
+    const receita = this.receitas.find(item => item.id == relacionamento?.idReceita);
+    if (receita?.id) {
+      this.idReceitaTemp = receita.id!;
+      return receita.titulo;
+    }
+    return "";
+  }
+
+  horarioReceita(): string {
+    let receita = this.receitas.find(item => item.id == this.idReceitaTemp);
+    if (receita)
+      return receita.horario;
+    return "";
   }
 
   consultarReceita(id: number | undefined): void {

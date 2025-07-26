@@ -201,11 +201,14 @@ export class ConsultarReceitaComponent {
   //         });
   //       });
 
-  //       this.receitaService.deleteById(this.receita.id!).subscribe({
+  //       this.receita.id = Number(this.activatedRoute.snapshot.paramMap.get('id'));
+
+  //       this.receitaService.deleteById(this.receita.id).subscribe({
   //         next: () => {
   //           this.router.navigate(["/buscar-receitas"]);
   //         }, error: (erro) => {
   //           console.warn("Erro ao deletar receita. " + erro);
+  //           // alert("BD nao deixou apagar. Existe relacionamento");
   //         }
   //       });
 

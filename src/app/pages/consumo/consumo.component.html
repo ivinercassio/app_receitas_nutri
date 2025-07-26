@@ -4,25 +4,26 @@
 
     <table class="d-flex justify-content-center mb-3">
         <tbody>
-            <div *ngFor="let item of receitas; let i = index">
+            <!-- listar os consumos e atraves dele encontrar os dados da receita -->
+            <div *ngFor="let item of listConsumo; let i = index">
                 <tr>
                     <div class="mb-2 row">
                         <div class="col">
-                            <label for="titulo" class="form-label">Titulo</label>
-                            <input class="form-control" type="text" name="titulo" id="titulo" [value]="item.titulo" readonly>
+                            <label for="titulo" class="form-label">Receita</label>
+                            <input class="form-control" type="text" name="titulo" id="titulo" [value]="tituloReceita(item.id, item.dataHora)" readonly>
                         </div>
                         <div class="col">
-                            <label for="rendimento" class="form-label">Rendimento (porções)</label>
-                            <input type="text" name="rendimento" id="rendimento" class="form-control"
-                                [value]="item.rendimento" readonly>
+                            <label for="horario" class="form-label">Horário</label>
+                            <input type="text" name="horario" id="horario" class="form-control"
+                                [value]="horarioReceita()" readonly>
                         </div>
                         <div class="col">
-                            <label for="tempo" class="form-label ms-3">Tempo (min)</label>
-                            <input type="text" name="tempo" id="tempo" class="form-control" [value]="item.tempo" readonly>
+                            <label for="data" class="form-label ms-3">Data do Consumo</label>
+                            <input type="text" name="data" id="data" class="form-control" [value]="item.dataHora" readonly>
                         </div>
                         <div class="col mt-4">
-                            <button (click)="consultarReceita(item.id)" type="button"
-                                class="btn btn-secondary ms-4">Consultar</button>
+                            <button (click)="consultarReceita(idReceitaTemp)" type="button"
+                                class="btn btn-secondary ms-4">Consultar Receita</button>
                         </div>
                     </div>
                 </tr>

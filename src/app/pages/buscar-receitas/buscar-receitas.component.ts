@@ -18,7 +18,16 @@ export class BuscarReceitasComponent {
 
   constructor(private router: Router) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    const recarregar = localStorage.getItem('recarregar');
+
+    if (!recarregar) {
+      localStorage.setItem('recarregar', 'true');
+      location.reload(); 
+    } else {
+      localStorage.removeItem('recarregar');
+    }
+  }
 
   onEnter(event: any): void {
     this.buscar();

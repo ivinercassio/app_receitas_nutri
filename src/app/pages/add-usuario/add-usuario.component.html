@@ -1,0 +1,84 @@
+<div class="container">
+    <h2 align=center class="mb-5 mt-5">Cadastro Usuário</h2>
+
+    <form class="form" [formGroup]="formulario" (ngSubmit)="salvarUsuario()">
+        <div class="row d-flex justify-content-center mb-3">
+            <div class="col-3">
+                <div class="row">
+                    <label class="form-label" for="nome">Nome</label>
+                    <input class="form-control" type="text" name="nome" id="nome" placeholder="Digite seu nome"
+                        formControlName="nome">
+                </div>
+            </div>
+            <div class="col-3">
+                <label class="form-label">Tipo de Usuário</label>
+                <select (change)="onSelectChange($event)" class="form-select">
+                    <option disabled selected>Selecione um tipo</option>
+                    <option value="PACIENTE">Paciente</option>
+                    <option value="NUTRICIONISTA">Nutricionista</option>
+                </select>
+            </div>
+        </div>
+        <div class="row d-flex justify-content-center mb-3">
+            <div class="col-3">
+                <div class="row">
+                    <label class="form-label" for="login">Login</label>
+                    <input class="form-control" type="text" name="login" id="login"
+                        placeholder="Digite seu e-mail de login" formControlName="login">
+                </div>
+            </div>
+            <div class="col-3">
+                <label class="form-label" for="senha">Senha</label>
+                <input class="form-control" type="password" name="senha" id="senha" placeholder="Digite sua senha"
+                    formControlName="senha">
+            </div>
+        </div>
+
+        <div class="d-grid col-6 mx-auto">
+            <button type="submit" class="btn btn-primary me-1">Salvar</button>
+        </div>
+    </form>
+</div>
+
+<!-- MODAL -->
+<div class="modal fade show" tabindex="-1" [ngClass]="{ 'd-block': modalAberto }">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cadastrar Nutricionista</h5>
+                <button type="button" class="btn-close" (click)="fecharModal()"></button>
+            </div>
+
+            <form [formGroup]="formGroup" (ngSubmit)="salvarComModal()">
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <label for="instagram" class="form-label">Instagram</label>
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon1">&#64;</span>
+                            <input type="text" class="form-control" placeholder="Digite seu instagram">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="emailContato" class="form-label">Email de Contato</label>
+                        <div class="input-group">
+                            <input id="emailContato" class="form-control" formControlName="emailContato"
+                                placeholder="Digite seu email profissional">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="telefone" class="form-label">Telefone</label>
+                        <div class="input-group">
+                            <input id="telefone" class="form-control" formControlName="telefone"
+                                placeholder="Digite seu telefone: (XXX) 9 XXXX-XXXX">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="fecharModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-success" [disabled]="formGroup.invalid">Concluir e Salvar</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

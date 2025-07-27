@@ -8,7 +8,7 @@
         <div class="row d-flex justify-content-center mb-3">
             <div class="col-3">
                 <label class="form-label" for="login">Login</label>
-                <input class="form-control" type="text" name="login" id="login" placeholder="Digite seu login"
+                <input class="form-control" type="text" name="login" id="login" placeholder="Digite seu e-mail de login"
                     formControlName="login">
             </div>
             <div class="col-3">
@@ -19,6 +19,9 @@
         </div>
         <div class="d-grid col-6 mx-auto">
             <button type="submit" class="btn btn-primary">Entrar</button>
+            <div class="d-flex justify-content-end mt-3">
+                <a routerLink="/add-usuario" class="btn border-0">Criar Conta</a>
+            </div>
         </div>
     </form>
 </div>

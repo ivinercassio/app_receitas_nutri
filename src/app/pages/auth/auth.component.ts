@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { Login } from '../../models/login';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, RouterModule],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.css'
 })
@@ -18,7 +18,7 @@ export class AuthComponent {
 
   constructor(private fb: FormBuilder, private authService: AuthService, private usuarioService: UsuarioService, private router: Router) {
     this.formulario = this.fb.group({
-      login: ['', Validators.required],
+      login: ['', Validators.required, Validators.email],
       senha: ['', Validators.required]
     });
   }

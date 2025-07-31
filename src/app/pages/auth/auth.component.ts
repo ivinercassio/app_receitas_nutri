@@ -18,7 +18,7 @@ export class AuthComponent {
 
   constructor(private fb: FormBuilder, private authService: AuthService, private usuarioService: UsuarioService, private router: Router) {
     this.formulario = this.fb.group({
-      login: ['', Validators.required, Validators.email],
+      login: ['', Validators.required],
       senha: ['', Validators.required]
     });
   }

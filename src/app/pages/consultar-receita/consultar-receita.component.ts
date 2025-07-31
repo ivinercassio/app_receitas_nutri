@@ -162,17 +162,10 @@ export class ConsultarReceitaComponent {
   }
 
   public registrarConsumo(): void {
+    if (this.btnFavoritar) return;
     let consumo = new Consumo();
     consumo.dataHora = String(new Date());
-    if (this.pacienteReceita.id != null) {
-      consumo.idPacienteReceita = this.pacienteReceita.id;
-      console.info("conheco o idpacientereceita " + this.pacienteReceita.id);
-    } else {
-      console.info("nao sei idpacientereceita " + this.pacienteReceita.id);
-      this.favoritar();
-      consumo.idPacienteReceita = this.pacienteReceita.id!;
-      this.btnFavoritar = true;
-    }
+    consumo.idPacienteReceita = this.pacienteReceita.id!;
 
     this.consumoService.save(consumo).subscribe({
       next: (retorno) => {
